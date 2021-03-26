@@ -31,31 +31,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ArrayList<Item> listItems = new ArrayList<>();
-        ArrayList<Bin> listBins = new ArrayList<>();
+        Service service = new Service();
 
-        extractBin("src/com/company/test.txt", listItems);
-        System.out.println("Capacité des bins: "+ sizeOfBin);
-        listBins.add(new Bin(sizeOfBin));
+        //extraction des items et de la taille d'un bin à partir du fichier
+        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/data/binpack1d_01.txt");
 
-        for(int i = 0; i < listItems.size(); i++){
-            Item currentItem = listItems.get(i);
-
-            int j = 0;
-            Bin currentBin = listBins.get(j);
-//            System.out.println(currentItem.size);
-//            System.out.println(currentBin.capacity + " " + currentBin.total);
-//            System.out.println(currentBin.addItem(currentItem));
-            while(!currentBin.addItem(currentItem)){
-                if(j+1 == listBins.size()){
-//                    System.out.println("Pas d'autre élement après, ajout d'un bin");
-                    listBins.add(new Bin(sizeOfBin));
-                }
-                j++;
-            }
-        }
+        //répartition des items dans les bins
+        ArrayList<Bin> listBins = service.fillBins(listItems);
 
         System.out.println(listBins);
+        System.out.println("Nombre minimum de bins: " + listBins.size());
     }
 
 }
