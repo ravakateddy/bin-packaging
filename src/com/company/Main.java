@@ -7,28 +7,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    static int sizeOfBin = 0;
-
-    public static void extractBin(String file, ArrayList<Item> listItems){
-        try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
-            int lineCounter = 0;
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                if(lineCounter == 1){
-                    sizeOfBin = Integer.parseInt(data.split(" ")[0]);
-                }else if(lineCounter > 1){
-                    listItems.add(new Item(Integer.parseInt(data)));
-                }
-                lineCounter++;
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         Service service = new Service();
