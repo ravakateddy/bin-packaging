@@ -29,7 +29,7 @@ public class Bin {
     }
 
     public boolean addItem(Item item){
-        System.out.println("Taille item:" + item.getSize() + " remplissage bin: " + total + " capacité: " + capacity);
+//        System.out.println("Taille item:" + item.getSize() + " remplissage bin: " + total + " capacité: " + capacity);
         if(item.getSize() + total <= capacity){
             listItems.add(item);
             setTotal(total+item.getSize());

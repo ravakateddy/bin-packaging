@@ -10,6 +10,7 @@ public class Service {
     private  int sizeOfBin;
     private ArrayList<Bin> listBins;
     private ArrayList<Item> listItems;
+    private ListItemsOrderStrategy listItemsOrderStrategy;
 
 
     public Service(){
@@ -17,7 +18,7 @@ public class Service {
         listItems = new ArrayList();
     }
 
-    public ArrayList<Bin> fillBins(ArrayList<Item> listItems) {
+    public ArrayList<Bin> fillBins() {
         System.out.println("Capacité des bins: "+ sizeOfBin);
         listBins.add(new Bin(sizeOfBin));
 
@@ -27,16 +28,17 @@ public class Service {
             int j=0;
             Bin currentBin = listBins.get(j);
             while(!currentBin.addItem(currentItem)){
-                System.out.println("Pas de place dans le bin actuel");
+//                System.out.println("Pas de place dans le bin actuel");
                 if(j+1 == listBins.size()) {
                     listBins.add(new Bin(sizeOfBin));
-                    System.out.println("Ajout d'un bin");
+//                    System.out.println("Ajout d'un bin");
                 }
                 j++;
                 currentBin = listBins.get(j);
             }
 
-            System.out.println("Item ajouté");
+//            System.out.println("Item ajouté");
+            System.out.println(listBins);
         }
         return listBins;
     }
@@ -65,6 +67,9 @@ public class Service {
         return listItems;
     }
 
+    public void setListItemsOrderStrategy(ListItemsOrderStrategy strategy){
+        listItems = strategy.orderList(listItems);
+    }
 
     public ArrayList<Bin> getListBins() {
         return listBins;
