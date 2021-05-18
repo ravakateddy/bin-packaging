@@ -18,16 +18,26 @@ public class Service {
         listItems = new ArrayList();
     }
 
+    /**
+     * Return la liste des bins avec la répartition des items
+     * Ajoute un bin à chaque fois d'un item rentre dans aucun des bins existants
+     * @return ArrayList
+     */
     public ArrayList<Bin> fillBins() {
         System.out.println("Capacité des bins: "+ sizeOfBin);
         listBins.add(new Bin(sizeOfBin));
 
+        //Parcours des items
         for(int i = 0; i < listItems.size(); i++){
+            //Item courant
             Item currentItem = listItems.get(i);
 
             int j=0;
             Bin currentBin = listBins.get(j);
+
+            // tant l'on ne peut pas ajouter l'item au bin courant, on parcourt la liste de bin
             while(!currentBin.addItem(currentItem)){
+                //Si on atteint la taille de la liste de bin, on ajoute un nouveau bin
                 if(j+1 == listBins.size()) {
                     listBins.add(new Bin(sizeOfBin));
                 }
@@ -49,7 +59,7 @@ public class Service {
                 String data = myReader.nextLine();
                 if(lineCounter == 0){
                     this.setSizeOfBin(Integer.parseInt(data.split(" ")[0]));
-                }else if(lineCounter > 1){
+                }else if(lineCounter >= 1){
                     listItems.add(new Item(Integer.parseInt(data)));
                 }
                 lineCounter++;

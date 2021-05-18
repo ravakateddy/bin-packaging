@@ -17,7 +17,7 @@ public class FilesTest{
                 //extraction des items et de la taille d'un bin à partir du fichier
                 ArrayList<Item> listItems = service.extractItemFromFile(file.toString());
                 //répartition des items dans les bins
-                ArrayList<Bin> listBins = service.fillBins(listItems);
+                ArrayList<Bin> listBins = service.fillBins();
                 System.out.println("Nombre minimum de bins pour " + file.toString() + " : " + listBins.size());
             }
         } catch (IOException e) {
