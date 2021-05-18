@@ -27,23 +27,30 @@ public class Main {
         SimpleOrder simpleOrder = new SimpleOrder();
 
         //extraction des items et de la taille d'un bin à partir du fichier
-        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/data/binpack1d_01.txt");
-
+        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/data/binpack1d_001.txt");
 //        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/test2.txt");
 
-//        service.setListItemsOrderStrategy(firstFitDecreasing);
-        service.setListItemsOrderStrategy(simpleOrder);
+
+        //Sélection du tri de la liste
+        service.setListItemsOrderStrategy(firstFitDecreasing);
+//        service.setListItemsOrderStrategy(simpleOrder);
 
         System.out.println(service.getListItems());
 
-//        répartition des items dans les bins
+        //répartition des items dans les bins
+
+        //Initialisation de la liste de Bins
         ArrayList<Bin> listBins = service.fillBins();
 
+        // liste des bins avec la répartition des items
         System.out.println(listBins);
         System.out.println("Nombre minimum de bins: " + listBins.size());
 
+
+        //Transformation de nos données en dataModel
         ArrayList<Double> weights = new ArrayList<>();
         listItems.stream().mapToDouble(Item::getSize).forEach(weights::add);
+        System.out.println("weights" + weights);
         Object[] obj = weights.toArray();
 
         double[] weight = new double[obj.length];
@@ -51,14 +58,13 @@ public class Main {
             //Convertir les objets en int
             weight[i] = (double) obj[i];
         }
-        System.out.println(weight.getClass().getSimpleName());
 
 //-----------------------------------------------------------------------------------//
 
 
         Loader.loadNativeLibraries();
-        final testOrTools.DataModel data = new testOrTools.DataModel();
 
+        //Déclaration du solveur
         // Create the linear solver with the SCIP backend.
         MPSolver solver = MPSolver.createSolver("SCIP");
         if (solver == null) {
@@ -66,6 +72,7 @@ public class Main {
             return;
         }
 
+        //Create the variables
         MPVariable[][] x = new MPVariable[weight.length][weight.length];
         for (int i = 0; i < weight.length; ++i) {
             for (int j = 0; j < weight.length; ++j) {
@@ -77,6 +84,8 @@ public class Main {
             y[j] = solver.makeIntVar(0, 1, "");
         }
 
+
+        //Define the constraints
         double infinity = java.lang.Double.POSITIVE_INFINITY;
         for (int i = 0; i < weight.length; ++i) {
             MPConstraint constraint = solver.makeConstraint(1, 1, "");
@@ -95,19 +104,27 @@ public class Main {
 
         for (int j = 0; j < weight.length; ++j) {
             MPConstraint constraint = solver.makeConstraint(0, infinity, "");
+            //definition taille bin
             constraint.setCoefficient(y[j], service.getSizeOfBin());
             for (int i = 0; i < weight.length; ++i) {
                 constraint.setCoefficient(x[i][j], -weight[i]);
             }
         }
 
+        //Define the objective
         MPObjective objective = solver.objective();
         for (int j = 0; j < weight.length; ++j) {
             objective.setCoefficient(y[j], 1);
         }
         objective.setMinimization();
 
+        System.out.println("Affichage résultat");
+
+
+        //Call the solver and prit the solution
         final MPSolver.ResultStatus resultStatus = solver.solve();
+
+        System.out.println(resultStatus);
 
         // Check that the problem has an optimal solution.
         if (resultStatus == MPSolver.ResultStatus.OPTIMAL) {
