@@ -1,15 +1,12 @@
 package com.company;
 
-import com.google.ortools.Loader;
-import com.google.ortools.linearsolver.MPConstraint;
-import com.google.ortools.linearsolver.MPObjective;
-import com.google.ortools.linearsolver.MPSolver;
-import com.google.ortools.linearsolver.MPVariable;
+import com.company.generator.FirstFitGeneratorStrategy;
+import com.company.generator.OneItemOneBinGeneratorStrategy;
+import com.company.order.DecreasingOrderStrategy;
+import com.company.order.SimpleOrderStrategy;
 
-import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class Main {
 
@@ -21,18 +18,35 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Service service = new Service();
+        Solution solution = new Solution();
 
-        FirstFitDecreasing firstFitDecreasing = new FirstFitDecreasing();
-        SimpleOrder simpleOrder = new SimpleOrder();
+
 
         //extraction des items et de la taille d'un bin à partir du fichier
-        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/data/binpack1d_001.txt");
+        List<Item> listItems = solution.extractItemFromFile("src/com/company/data/binpack1d_001.txt");
+        List<Bin> listBins = new ArrayList<>();
 //        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/test2.txt");
 
+        // Initialisation order
+        DecreasingOrderStrategy decreasingOrder = new DecreasingOrderStrategy();
+        SimpleOrderStrategy simpleOrder = new SimpleOrderStrategy();
 
+        // Initialisation des générateurs de solutions
+        OneItemOneBinGeneratorStrategy oneItemOneBinGeneratorStrategy = new OneItemOneBinGeneratorStrategy();
+        FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
+
+        // TODO Initialisation des voisins
+
+
+        solution.setListItemsOrderStrategy(decreasingOrder);
+        solution.setGeneratorStrategy(firstFitGeneratorStrategy);
+        System.out.println(solution.getListBins() + " avec " + solution.getListBins().size() + " utilisés");
+
+
+        // TODO Programmation linéaire
+/*
         //Sélection du tri de la liste
-        service.setListItemsOrderStrategy(firstFitDecreasing);
+        service.setListItemsOrderStrategy(decreasingOrder);
 //        service.setListItemsOrderStrategy(simpleOrder);
 
         System.out.println(service.getListItems());
@@ -40,7 +54,7 @@ public class Main {
         //répartition des items dans les bins
 
         //Initialisation de la liste de Bins
-        ArrayList<Bin> listBins = service.fillBins();
+        ArrayList<Bin> listBins = service.firstFitDecreasing();
 
         // liste des bins avec la répartition des items
         System.out.println(listBins);
@@ -147,7 +161,7 @@ public class Main {
             System.out.println("\nTotal packed weight: " + totalWeight);
         } else {
             System.err.println("The problem does not have an optimal solution.");
-        }
+        }*/
     }
 
 }
