@@ -37,6 +37,19 @@ public class Bin {
         return false;
     }
 
+    public int numberOfItem() {
+       return listItems.size();
+    }
+
+    public ArrayList<Item> getListItems() {
+        return listItems;
+    }
+
+    public void remove(Item item) {
+        listItems.remove(item);
+        setTotal(getTotal()-item.getSize());
+    }
+
     @Override
     public String toString() {
         return listItems.toString();

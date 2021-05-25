@@ -2,6 +2,8 @@ package com.company;
 
 import com.company.generator.FirstFitGeneratorStrategy;
 import com.company.generator.OneItemOneBinGeneratorStrategy;
+import com.company.neighboor.EchangeOneItemStrategy;
+import com.company.neighboor.MoveOneItemStrategy;
 import com.company.order.DecreasingOrderStrategy;
 import com.company.order.SimpleOrderStrategy;
 
@@ -23,9 +25,9 @@ public class Main {
 
 
         //extraction des items et de la taille d'un bin à partir du fichier
-        List<Item> listItems = solution.extractItemFromFile("src/com/company/data/binpack1d_001.txt");
+//        List<Item> listItems = solution.extractItemFromFile("src/com/company/data/binpack1d_001.txt");
         List<Bin> listBins = new ArrayList<>();
-//        ArrayList<Item> listItems = service.extractItemFromFile("src/com/company/test2.txt");
+        List<Item> listItems = solution.extractItemFromFile("src/com/company/test2.txt");
 
         // Initialisation order
         DecreasingOrderStrategy decreasingOrder = new DecreasingOrderStrategy();
@@ -36,11 +38,16 @@ public class Main {
         FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
 
         // TODO Initialisation des voisins
-
+        MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
+        EchangeOneItemStrategy echangeOneItemStrategy = new EchangeOneItemStrategy();
 
         solution.setListItemsOrderStrategy(decreasingOrder);
         solution.setGeneratorStrategy(firstFitGeneratorStrategy);
         System.out.println(solution.getListBins() + " avec " + solution.getListBins().size() + " utilisés");
+
+        for(int i = 0; i < 10; i++){
+            System.out.println(echangeOneItemStrategy.move(solution.getListBins()));
+        }
 
 
         // TODO Programmation linéaire
