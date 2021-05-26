@@ -6,6 +6,8 @@ import com.company.neighboor.EchangeOneItemStrategy;
 import com.company.neighboor.MoveOneItemStrategy;
 import com.company.order.DecreasingOrderStrategy;
 import com.company.order.SimpleOrderStrategy;
+import com.company.vue.StackedBarChart;
+import org.jfree.ui.RefineryUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,6 @@ public class Main {
         OneItemOneBinGeneratorStrategy oneItemOneBinGeneratorStrategy = new OneItemOneBinGeneratorStrategy();
         FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
 
-        // TODO Initialisation des voisins
         MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
         EchangeOneItemStrategy echangeOneItemStrategy = new EchangeOneItemStrategy();
 
@@ -51,6 +52,15 @@ public class Main {
 
 
         // TODO Programmation linéaire
+
+
+        // Graph
+        final StackedBarChart demo =
+                new StackedBarChart("Stacked Bar Chart", solution.getListBins());
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
+        System.out.println("Fin");
 /*
         //Sélection du tri de la liste
         service.setListItemsOrderStrategy(decreasingOrder);
