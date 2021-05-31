@@ -2,10 +2,7 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BinPack {
@@ -68,7 +65,10 @@ public class BinPack {
 
         List<int[]> listOfNeighboor = new ArrayList<>();
 
-        echangeItem(sizes, bins);
+        for(int i = 0; i<10; i++) {
+            echangeItem(sizes, bins);
+        }
+
 
         //génération de 10 voisins
         /*for(int i = 0; i < 10; i++) {
@@ -170,10 +170,49 @@ public class BinPack {
 
         //Déplacement d'un item vers un autre bin
         boolean moveOK = false;
+        System.out.println(binOfItemSelect + "/" + (bins.size()-1));
+        int random;
+        if(binOfItemSelect == 0){
+            random = 1;
+        }else if(binOfItemSelect == bins.size()-1){
+            random = 0;
+        } else {
+            random = (Math.random() > 0.5) ? 1 : 0;
+        }
 
-        int random = (Math.random() > 0.5) ? 1 : 0;
-        System.out.println(random);
+        System.out.println(bins);
+        int i = 1;
+        int neighboorBin;
+        if(random == 1) {
+            System.out.println(bins.get(binOfItemSelect+i) == 9 && binOfItemSelect+i <= bins.size());
+            while(bins.get(binOfItemSelect+i) == 9 && binOfItemSelect+i <= bins.size()){
+                i++;
+            }
 
+//            System.out.println("Voisin potentiel en "+ i + " cap dispo " + bins.get(binOfItemSelect+i));
+            neighboorBin = binOfItemSelect+i;
+        }else {
+            System.out.println(bins.get(binOfItemSelect-i) == 9 && binOfItemSelect-i > 0);
+            while(bins.get(binOfItemSelect-i) == 9 && binOfItemSelect-i > 0){
+                i++;
+            }
+
+//            System.out.println("Voisin potentiel en - "+ i + " cap dispo " + bins.get(binOfItemSelect-i));
+            neighboorBin = binOfItemSelect-i;
+        }
+
+        System.out.println(neighboorBin);
+        System.out.println(Arrays.toString(assignedBin));
+//        List<Integer> indexOfItemsOfNeighboorBin = new ArrayList<>();
+        HashMap<Integer,Integer> indexOfItemsOfNeighboorBin = new HashMap<>();
+        for(int j = 0; j < assignedBin.length; j++){
+            if(assignedBin[j] == neighboorBin){
+                indexOfItemsOfNeighboorBin.put(j, sizes.get(j));
+            }
+        }
+
+        System.out.println(indexOfItemsOfNeighboorBin);
+        System.out.println(indexOfItemsOfNeighboorBin);
 
 //        for(int i = 0; i < bins.size(); i++) {
 //            if(!moveOK) {
