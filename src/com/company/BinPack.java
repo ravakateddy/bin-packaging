@@ -70,7 +70,9 @@ public class BinPack {
         //génération de 10 voisins
         for(int i = 0; i < 10; i++) {
             if(moveOneItem(sizes, bins)) {
-                listOfNeighboor.add(assignedBin);
+                int[] neighboor = new int[numItems];
+                System.arraycopy(assignedBin, 0, neighboor, 0, neighboor.length);
+                listOfNeighboor.add(neighboor);
             } else{
                 i--;
             }
@@ -118,7 +120,7 @@ public class BinPack {
     static boolean moveOneItem(List<Integer> sizes, List<Integer> bins) {
 
         System.out.println("Before: " + Arrays.toString(assignedBin));
-        assignedBin = solInit;
+        System.arraycopy(solInit, 0, assignedBin, 0, sizes.size());
         System.out.println("After: " + Arrays.toString(assignedBin));
 
 //        System.out.println(sizes.toString());
@@ -157,12 +159,7 @@ public class BinPack {
             }
         }
 
-        if(!moveOK) {
-//            System.out.println("pas de déplacement possible");
-            return false;
-        }else {
-            return true;
-        }
+        return moveOK;
 
     }
 
