@@ -3,52 +3,54 @@ package com.company.neighboor;
 import com.company.Bin;
 import com.company.Item;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MoveOneItemStrategy implements NeighbourStrategy {
     @Override
-    public List<Bin> move(List<Bin> listBins) {
+    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins) {
 
-        int A = (int)(Math.random() * listBins.size());
+        int[] voisin = new int[assignedBin.length];
 
-        //récupération capacité bin
-        int capacityBin = listBins.get(0).getCapacity();
+        System.out.println("Before: " + Arrays.toString(assignedBin));
+        System.arraycopy(assignedBin, 0, voisin, 0, assignedBin.length);
+        System.out.println("After: " + Arrays.toString(assignedBin));
 
-        List<Item> listItemOfBin = listBins.get(A).getListItems();
-        Item itemSelect = listItemOfBin.get((int)(Math.random() * listItemOfBin.size()));
+//        System.out.println(sizes.toString());
+//        System.out.println("List bins: " + bins.toString());
+//        System.out.println(Arrays.toString(solInit));
+//        System.out.println(Arrays.toString(assignedBin));
 
-        boolean placement = false;
-        for(int i=0; i < listBins.size(); i++){
-            if(i != A){
-                if(listBins.get(i).addItem(itemSelect)){
-                    listBins.get(A).remove(itemSelect);
+        int itemSelect = (int)(Math.random() * voisin.length-1);
+//        System.out.println(itemSelect);
 
-                    if(listBins.get(A).getTotal() == 0) {
-                        listBins.remove(A);
-                    }
+        int binOfItemSelect = voisin[itemSelect];
+//        System.out.println(binOfItemSelect);
 
-                    placement = true;
+        int sizeOfItemSelect = items.get(itemSelect);
+//        System.out.println("Taille de l'item: " + sizeOfItemSelect);
+
+        int capacityOfBinSelect = bins.get(binOfItemSelect);
+//        System.out.println(capacityOfBinSelect);
+
+        //vérification si un bin à la capacité d'accueillir l'item sélectionné
+
+        //Déplacement d'un item vers un autre bin
+        boolean moveOK = false;
+        for(int i = 0; i < bins.size(); i++) {
+            if(!moveOK) {
+                if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < 9) {
+//                    System.out.println("On peut déplacer ici: " + i + " capacité dispo de ce bin: " + bins.get(i));
+
+                    //Mise à jour des capacités restantes des bins
+                    bins.set(i, bins.get(i)-sizeOfItemSelect);
+                    bins.set(binOfItemSelect, bins.get(binOfItemSelect)+sizeOfItemSelect);
+                    //enregistrement nouvel emplacement
+                    voisin[itemSelect] = i;
+                    moveOK = true;
                 }
             }
-
-            if(placement){
-                System.out.println("Element placé " + i + " break for");
-                break;
-            }
         }
-
-        if(!placement) {
-
-            listBins.get(A).remove(itemSelect);
-
-            if((listBins.get(A).getTotal() - itemSelect.getSize()) == 0) {
-                listBins.remove(A);
-            }
-
-            listBins.add(new Bin(capacityBin));
-            listBins.get(listBins.size()-1).addItem(itemSelect);
-        }
-
-        return listBins;
+        return voisin;
     }
 }

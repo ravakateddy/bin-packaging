@@ -1,7 +1,7 @@
 package com.company;
 
+
 import com.company.generator.GeneratorStrategy;
-import com.company.order.ListItemsOrderStrategy;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,20 +10,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Solution {
-
-    private  int sizeOfBin;
-    private List<Bin> listBins;
-    private List<Item> listItems;
-    private ListItemsOrderStrategy listItemsOrderStrategy;
-    private GeneratorStrategy generatorStrategy;
-
+    private int capacity;
+    private ArrayList<Integer> listItems;
+    private int[] assignedBin;
+    private List<Integer> listBins;
+    GeneratorStrategy generatorStrategy;
+    private int[] neighbour;
 
     public Solution(){
-        listBins = new ArrayList();
-        listItems = new ArrayList();
+        this.listItems = new ArrayList<>();
+        listBins = new ArrayList<>();
     }
 
-    public List<Item> extractItemFromFile(String file){
+    public void getSolutionFromFile(String file){
 
         try {
             File myObj = new File(file);
@@ -32,44 +31,52 @@ public class Solution {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 if(lineCounter == 0){
-                    this.setSizeOfBin(Integer.parseInt(data.split(" ")[0]));
+                    capacity = Integer.parseInt(data.split(" ")[0]);
                 }else if(lineCounter >= 1){
-                    listItems.add(new Item(Integer.parseInt(data)));
+                    listItems.add(Integer.parseInt(data));
                 }
                 lineCounter++;
             }
+
             myReader.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("Erreur sur l'extraction du fichier");
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Integer> getListItems() {
         return listItems;
     }
-    public List<Bin> getListBins() {
-        return listBins;
+
+    public int getCapacity() {
+        return capacity;
     }
-    public void setListBins(List<Bin> listBins) {
-        this.listBins = listBins;
+
+    public void setAssignedBin(int[] assignedBin) {
+        this.assignedBin = assignedBin;
     }
-    public List<Item> getListItems() {
-        return listItems;
+
+    public int[] getAssignedBin() {
+        return assignedBin;
     }
-    public void setListItems(List<Item> listItems) {
+
+    public void setListItems(ArrayList<Integer> listItems) {
         this.listItems = listItems;
     }
-    public int getSizeOfBin() {
-        return sizeOfBin;
-    }
-    public void setSizeOfBin(int sizeOfBin) {
-        this.sizeOfBin = sizeOfBin;
-    }
+
     public void setGeneratorStrategy(GeneratorStrategy generatorStrategy) {
         this.generatorStrategy = generatorStrategy;
-        setListBins(generatorStrategy.generate(listItems, sizeOfBin));
+        setAssignedBin(this.generatorStrategy.generate(listItems, capacity, listBins));
+
     }
-    public void setListItemsOrderStrategy(ListItemsOrderStrategy listItemsOrderStrategy) {
-        this.listItemsOrderStrategy = listItemsOrderStrategy;
-        setListItems(listItemsOrderStrategy.orderList(listItems));
+
+    public List<Integer> getListBins(){
+        return listBins;
     }
+
+
+
+
 }

@@ -7,5 +7,11 @@ import java.util.List;
 
 public interface GeneratorStrategy {
 
-    public List<Bin> generate(List<Item> items, int sizeOfBin);
+    /**
+     *
+     * @param items : La liste des items
+     * @param sizeOfBin : La capacité d'un Bin
+     * @return
+     */
+    public int[] generate(List<Integer> items, int sizeOfBin, List<Integer> listBins);
 }

@@ -1,5 +1,10 @@
 package com.company;
 
+import com.company.generator.FirstFitGeneratorStrategy;
+import com.company.generator.GeneratorStrategy;
+import com.company.generator.OneItemOneBinGeneratorStrategy;
+import com.company.neighboor.MoveOneItemStrategy;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -20,28 +25,24 @@ public class BinPack {
 
         //Récupération information fichier
 //        String file = "src/com/company/test2.txt";
-        String file = "src/com/company/data/binpack1d_00.txt";
+        Solution init = new Solution();
+        init.getSolutionFromFile("src/com/company/test2.txt");
+        System.out.println(init.getAssignedBin());
+        OneItemOneBinGeneratorStrategy oneItemOneBinGeneratorStrategy = new OneItemOneBinGeneratorStrategy();
+        FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
+        init.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
 
-        try {
-            File myObj = new File(file);
-            Scanner myReader = new Scanner(myObj);
-            int lineCounter = 0;
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                if(lineCounter == 0){
-                    capacity = Integer.parseInt(data.split(" ")[0]);
-                }else if(lineCounter >= 1){
-                    sizes.add(Integer.parseInt(data));
-                }
-                lineCounter++;
-            }
 
-            myReader.close();
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Erreur sur l'extraction du fichier");
-            e.printStackTrace();
+        MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
+        for(int i=0; i<5; i++){
+            /*System.out.println("assignedBin" + Arrays.toString(init.getAssignedBin()));
+            System.out.println("listItems" + init.getListItems());
+            System.out.println("listBins"  + init.getListBins());*/
+            System.out.println(Arrays.toString(moveOneItemStrategy.move(init.getAssignedBin(), init.getListItems(), init.getListBins())));
         }
+        System.out.println(init.getListBins());
+        System.exit(0);
 
         numItems = sizes.size();
 
@@ -50,7 +51,7 @@ public class BinPack {
 
         bins.add(capacity);
 
-        assignedBin = new int[numItems];
+        assignedBin = new int[numItems]; // Numéro du bin à chaque position de l'item
         solInit = new int[numItems];
 
         //generator
@@ -98,6 +99,7 @@ public class BinPack {
     }
 
     static void firstFit(List<Integer> sizes, List<Integer> bins) {
+
 
         for (int item = 0; item < sizes.size(); item++) {
             for (int i = 0; i < bins.size(); i++) {
