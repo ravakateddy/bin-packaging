@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class BinPack {
 
@@ -46,7 +47,7 @@ public class BinPack {
         numItems = sizes.size();
 
         //order
-//        sizes = sizes.stream().sorted((integer1, integer2) -> Integer.compare(integer2, integer1)).collect(Collectors.toList());
+        sizes = sizes.stream().sorted((integer1, integer2) -> Integer.compare(integer2, integer1)).collect(Collectors.toList());
 
         bins.add(capacity);
 
@@ -54,8 +55,8 @@ public class BinPack {
         solInit = new int[numItems];
 
         //generator
-//        firstFit(sizes, bins);
-        oneBinByItem(sizes,bins);
+        firstFit(sizes, bins);
+//        oneBinByItem(sizes,bins);
 
 
 
@@ -67,8 +68,10 @@ public class BinPack {
 
         List<int[]> listOfNeighboor = new ArrayList<>();
 
+        echangeItem(sizes, bins);
+
         //génération de 10 voisins
-        for(int i = 0; i < 10; i++) {
+        /*for(int i = 0; i < 10; i++) {
             if(moveOneItem(sizes, bins)) {
                 int[] neighboor = new int[numItems];
                 System.arraycopy(assignedBin, 0, neighboor, 0, neighboor.length);
@@ -78,11 +81,10 @@ public class BinPack {
             }
         }
 
-//        System.out.println(Arrays.toString(listOfNeighboor.get(0)));
         System.out.println(listOfNeighboor.size());
         for(int i = 0; i< listOfNeighboor.size(); i++) {
             System.out.println(Arrays.toString(listOfNeighboor.get(i)));
-        }
+        }*/
 
     }
 
@@ -119,35 +121,24 @@ public class BinPack {
 
     static boolean moveOneItem(List<Integer> sizes, List<Integer> bins) {
 
-        System.out.println("Before: " + Arrays.toString(assignedBin));
+        //reinitialisation de assignedBin avec la solution initiale
         System.arraycopy(solInit, 0, assignedBin, 0, sizes.size());
-        System.out.println("After: " + Arrays.toString(assignedBin));
 
-//        System.out.println(sizes.toString());
-//        System.out.println("List bins: " + bins.toString());
-//        System.out.println(Arrays.toString(solInit));
-//        System.out.println(Arrays.toString(assignedBin));
-
+        //Tirage de l'item à déplacer
         int itemSelect = (int)(Math.random() * assignedBin.length-1);
-//        System.out.println(itemSelect);
 
+        //Récupération du bin contenant l'item sélectionné
         int binOfItemSelect = assignedBin[itemSelect];
-//        System.out.println(binOfItemSelect);
 
+        //Récupération de la taille de l'item sélectionné
         int sizeOfItemSelect = sizes.get(itemSelect);
-//        System.out.println("Taille de l'item: " + sizeOfItemSelect);
-
-        int capacityOfBinSelect = bins.get(binOfItemSelect);
-//        System.out.println(capacityOfBinSelect);
-
-        //vérification si un bin à la capacité d'accueillir l'item sélectionné
 
         //Déplacement d'un item vers un autre bin
         boolean moveOK = false;
         for(int i = 0; i < bins.size(); i++) {
             if(!moveOK) {
+                //vérification si un bin à la capacité d'accueillir l'item sélectionné
                 if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < capacity) {
-//                    System.out.println("On peut déplacer ici: " + i + " capacité dispo de ce bin: " + bins.get(i));
 
                     //Mise à jour des capacités restantes des bins
                     bins.set(i, bins.get(i)-sizeOfItemSelect);
@@ -161,6 +152,45 @@ public class BinPack {
 
         return moveOK;
 
+    }
+
+    static boolean echangeItem(List<Integer> sizes, List<Integer> bins) {
+
+        //reinitialisation de assignedBin avec la solution initiale
+        System.arraycopy(solInit, 0, assignedBin, 0, sizes.size());
+
+        //Tirage de l'item à déplacer
+        int itemSelect = (int)(Math.random() * assignedBin.length-1);
+
+        //Récupération du bin contenant l'item sélectionné
+        int binOfItemSelect = assignedBin[itemSelect];
+
+        //Récupération de la taille de l'item sélectionné
+        int sizeOfItemSelect = sizes.get(itemSelect);
+
+        //Déplacement d'un item vers un autre bin
+        boolean moveOK = false;
+
+        int random = (Math.random() > 0.5) ? 1 : 0;
+        System.out.println(random);
+
+
+//        for(int i = 0; i < bins.size(); i++) {
+//            if(!moveOK) {
+//                //vérification si un bin à la capacité d'accueillir l'item sélectionné
+//                if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < capacity) {
+//
+//                    //Mise à jour des capacités restantes des bins
+//                    bins.set(i, bins.get(i)-sizeOfItemSelect);
+//                    bins.set(binOfItemSelect, bins.get(binOfItemSelect)+sizeOfItemSelect);
+//                    //enregistrement nouvel emplacement
+//                    assignedBin[itemSelect] = i;
+//                    moveOK = true;
+//                }
+//            }
+//        }
+
+        return moveOK;
     }
 
 }
