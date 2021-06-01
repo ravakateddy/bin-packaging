@@ -2,11 +2,13 @@ package com.company;
 
 
 import com.company.generator.GeneratorStrategy;
+import com.company.neighboor.NeighbourStrategy;
 import com.company.order.ListItemsOrderStrategy;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,8 +17,6 @@ public class Solution {
     private List<Integer> listItems;
     private int[] assignedBin;
     private List<Integer> listBins;
-    GeneratorStrategy generatorStrategy;
-    ListItemsOrderStrategy listItemsOrderStrategy;
     private int[] neighbour;
 
     public Solution(){
@@ -64,26 +64,22 @@ public class Solution {
         return assignedBin;
     }
 
-    public void setListItems(ArrayList<Integer> listItems) {
+    public void setListItems(List<Integer> listItems) {
         this.listItems = listItems;
     }
 
-    public void setGeneratorStrategy(GeneratorStrategy generatorStrategy) {
-        this.generatorStrategy = generatorStrategy;
-        setAssignedBin(this.generatorStrategy.generate(listItems, capacity, listBins));
-
-    }
-
-    public void setListItemsOrderStrategy(ListItemsOrderStrategy listItemsOrderStrategy) {
-        this.listItemsOrderStrategy = listItemsOrderStrategy;
-        this.listItems = listItemsOrderStrategy.orderList(listItems);
+    public void setListBins(List<Integer> listBins) {
+        this.listBins = listBins;
     }
 
     public List<Integer> getListBins(){
         return listBins;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Solution{" +
+                "assignedBin=" + Arrays.toString(assignedBin) +
+                '}';
+    }
 }

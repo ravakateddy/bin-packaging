@@ -11,11 +11,7 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
     public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins) {
 
         int[] voisin = new int[assignedBin.length];
-
-        System.out.println("Before: " + Arrays.toString(assignedBin));
         System.arraycopy(assignedBin, 0, voisin, 0, assignedBin.length);
-        System.out.println("After: " + Arrays.toString(assignedBin));
-
         int itemSelect = (int)(Math.random() * voisin.length-1);
 
         int binOfItemSelect = voisin[itemSelect];

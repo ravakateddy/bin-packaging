@@ -3,9 +3,11 @@ package com.company;
 import com.company.generator.FirstFitGeneratorStrategy;
 import com.company.generator.GeneratorStrategy;
 import com.company.generator.OneItemOneBinGeneratorStrategy;
+import com.company.neighboor.EchangeOneItemStrategy;
 import com.company.neighboor.MoveOneItemStrategy;
 import com.company.order.DecreasingOrderStrategy;
 import com.company.order.SimpleOrderStrategy;
+import com.company.solver.RecuitSimuleSolver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,24 +31,24 @@ public class BinPack {
 //        String file = "src/com/company/test2.txt";
         Solution init = new Solution();
         init.getSolutionFromFile("src/com/company/test2.txt");
+
+        // Order
         DecreasingOrderStrategy decreasingOrderStrategy = new DecreasingOrderStrategy();
         SimpleOrderStrategy simpleOrderStrategy = new SimpleOrderStrategy();
-        init.setListItemsOrderStrategy(simpleOrderStrategy);
-        System.out.println(init.getListItems());
 
+        // Generator
         OneItemOneBinGeneratorStrategy oneItemOneBinGeneratorStrategy = new OneItemOneBinGeneratorStrategy();
         FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
-        init.setGeneratorStrategy(firstFitGeneratorStrategy);
 
-
+        // Neighbour
         MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
-        for (int i = 0; i < 5; i++) {
-            /*System.out.println("assignedBin" + Arrays.toString(init.getAssignedBin()));
-            System.out.println("listItems" + init.getListItems());
-            System.out.println("listBins"  + init.getListBins());*/
-            System.out.println(Arrays.toString(moveOneItemStrategy.move(init.getAssignedBin(), init.getListItems(), init.getListBins())));
-        }
-        System.out.println(init.getListBins());
+        EchangeOneItemStrategy echangeOneItemStrategy = new EchangeOneItemStrategy();
+
+        RecuitSimuleSolver recuitSimuleSolver = new RecuitSimuleSolver(init);
+        recuitSimuleSolver.setListItemsOrderStrategy(simpleOrderStrategy);
+        recuitSimuleSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
+        recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
+        recuitSimuleSolver.solve(0.5);
         System.exit(0);
     }
 

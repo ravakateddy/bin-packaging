@@ -8,12 +8,19 @@ import com.company.neighboor.MoveOneItemStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecuitSimuleSolver {
-    public List<Bin> solve(Solution x0, double t0) {
+public class RecuitSimuleSolver extends Solver {
+
+
+    public RecuitSimuleSolver(Solution init) {
+        super(init);
+    }
+
+    public List<Bin> solve(double t0) {
+        System.out.println(init);
 
         int n1 = 50;
         int n2=10;
-        Solution xmin = x0;
+        Solution xmin = init;
         //int fmin = xmin.fitness();
         for(int k=0; k<n1; k++){
             for(int l=1; l<n2; l++){
@@ -23,16 +30,18 @@ public class RecuitSimuleSolver {
 
             }
         }
+        System.out.println(init.getListBins());
         return null;
     }
 
     protected List<Solution> genererVoisins(Solution s, int nb){
         List<Solution> solutions = new ArrayList<>();
-        MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
-        EchangeOneItemStrategy echangeOneItemStrategy = new EchangeOneItemStrategy();
         for(int i=0; i<nb; i++){
             Solution solution = new Solution();
-            //solution.setListBins(echangeOneItemStrategy.move(s.getListBins()));
+            solution.setListBins(new ArrayList<>(s.getListBins()));
+            solution.setListItems(new ArrayList<>(s.getListItems()));
+            solution.setAssignedBin(s.getAssignedBin());
+            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins()));
             solutions.add(solution);
         }
         return solutions;
