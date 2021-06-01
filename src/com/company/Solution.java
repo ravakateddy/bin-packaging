@@ -86,7 +86,7 @@ public class Solution {
         int sum = 0;
         for(int i=0; i<listBins.size(); i++){
             if(listBins.get(i)!=capacity){
-                sum+=listBins.get(i);
+                sum+=Math.pow(listBins.get(i),2);
             }
 
         }

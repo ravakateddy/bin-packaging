@@ -17,14 +17,21 @@ public class RecuitSimuleSolver extends Solver {
     }
 
     public Solution solve(double t0, int n1, int n2, int nbVoisins, double mu) {
-        System.out.println(init.getFitness());
+//        System.out.println("SOLVE fitness init: " + init.getFitness());
         Solution xmin = init;
+//        System.out.println("Xmin debut: " + Arrays.toString(xmin.getAssignedBin()));
         Solution xi = xmin;
+//        System.out.println("Xi debut: " + Arrays.toString(xi.getAssignedBin()));
+//        System.out.println("Bins debut: " + xi.getListBins());
         //int fmin = xmin.fitness();
         for(int k=0; k<n1; k++){
+//            System.out.println("---------------------------------------- Tour N1 ------------------------------------");
             for(int l=1; l<n2; l++){
                 // Randomly select y € V(xi)
+//                System.out.println("---------------------------------------- Tour N2 ------------------------------------");
                 List<Solution> voisins = genererVoisins(xi, nbVoisins);
+//                System.out.println("Fitness voisin 0: " + voisins.get(0).getFitness());
+//                System.out.println("Bins voisin 0: " + voisins.get(0).getListBins());
                 int yi = (int)(Math.random() * voisins.size()-1);
                 Solution y = voisins.get(yi);
                 int deltaF = y.getFitness() - init.getFitness();
@@ -53,6 +60,7 @@ public class RecuitSimuleSolver extends Solver {
 
     protected List<Solution> genererVoisins(Solution s, int nb){
         List<Solution> solutions = new ArrayList<>();
+//        System.out.println("Solution s (xi): " + Arrays.toString(s.getAssignedBin()));
         for(int i=0; i<nb; i++){
             Solution solution = new Solution(s.getCapacity());
             solution.setListBins(new ArrayList<>(s.getListBins()));
@@ -62,6 +70,8 @@ public class RecuitSimuleSolver extends Solver {
             System.arraycopy(s.getAssignedBin(), 0, voisin, 0, s.getAssignedBin().length);
             solution.setAssignedBin(voisin);
             solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), init.getCapacity()));
+//            System.out.println("Solution obtenue: " + Arrays.toString(solution.getAssignedBin()));
+//            System.out.println("Etat s (xi): " + Arrays.toString(s.getAssignedBin()));
             solutions.add(solution);
         }
         return solutions;

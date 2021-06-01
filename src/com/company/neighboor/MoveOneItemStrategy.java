@@ -18,9 +18,6 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
 
         int sizeOfItemSelect = items.get(itemSelect);
 
-        int capacityOfBinSelect = bins.get(binOfItemSelect);
-//        System.out.println(capacityOfBinSelect);
-
         //vérification si un bin à la capacité d'accueillir l'item sélectionné
 
         //Déplacement d'un item vers un autre bin
@@ -28,8 +25,6 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
         for(int i = 0; i < bins.size(); i++) {
             if(!moveOK) {
                 if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < sizeOfBin) {
-//                    System.out.println("On peut déplacer ici: " + i + " capacité dispo de ce bin: " + bins.get(i));
-
                     //Mise à jour des capacités restantes des bins
                     bins.set(i, bins.get(i)-sizeOfItemSelect);
                     bins.set(binOfItemSelect, bins.get(binOfItemSelect)+sizeOfItemSelect);
@@ -39,6 +34,8 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
                 }
             }
         }
+
+
         return voisin;
     }
 }

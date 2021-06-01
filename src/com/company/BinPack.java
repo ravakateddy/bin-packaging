@@ -28,7 +28,7 @@ public class BinPack {
         //Récupération information fichier
 //        String file = "src/com/company/test2.txt";
         Solution init = new Solution();
-        init.getSolutionFromFile("src/com/company/data/binpack1d_31.txt");
+        init.getSolutionFromFile("src/com/company/data/binpack1d_00.txt");
 
         // Order
         DecreasingOrderStrategy decreasingOrderStrategy = new DecreasingOrderStrategy();
@@ -44,13 +44,20 @@ public class BinPack {
 
         RecuitSimuleSolver recuitSimuleSolver = new RecuitSimuleSolver(init);
         recuitSimuleSolver.setListItemsOrderStrategy(simpleOrderStrategy);
-        recuitSimuleSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
+        recuitSimuleSolver.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
         recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
+
+        System.out.println("Bins init: " + Arrays.toString(init.getAssignedBin()));
+        System.out.println("Bins occupation init: " + init.getListBins());
+        System.out.println("Fitness init: " + init.getFitness());
 
 
         // fixer t0 de manière à avoir 4 chances sur 5 d’accepter ces solutions : exp(-Df/t0) = 0.8 => t0 = -Df/ln(0.8)
         // fixer n1 de manière à avoir 1 chance sur 100 (par exemple) d’accepter la même mauvaise solution que pour fixer t0 : n1 = ln(ln(0.8)/ln(0.01))/ln(μ)
-        System.out.println(recuitSimuleSolver.solve(0.5, 5, 5, 500, 0.75).getFitness());
+        Solution s = recuitSimuleSolver.solve(0.5, 5, 5, 500, 0.75);
+        System.out.println(s.getFitness());
+        System.out.println(s.getListBins());
+        System.out.println(Arrays.toString(s.getAssignedBin()));
     }
 
 }
