@@ -27,10 +27,12 @@ public class RecuitSimuleSolver extends Solver {
                 // Randomly select y € V(xi)
                 List<Solution> voisins = genererVoisins(xmin, nbVoisins);
                 Solution y = voisins.get((int)(Math.random() * voisins.size()-1));
+                //System.out.println(voisins);
                 int deltaF = y.getFitness() - init.getFitness();
                 if(deltaF < 0){
-                    
+
                 }
+
             }
         }
         return null;

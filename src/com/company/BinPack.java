@@ -44,8 +44,8 @@ public class BinPack {
 
         RecuitSimuleSolver recuitSimuleSolver = new RecuitSimuleSolver(init);
         recuitSimuleSolver.setListItemsOrderStrategy(simpleOrderStrategy);
-        recuitSimuleSolver.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
-        recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
+        recuitSimuleSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
+        recuitSimuleSolver.setNeighbourStrategy(echangeOneItemStrategy);
         recuitSimuleSolver.solve(0.5);
         System.exit(0);
     }
