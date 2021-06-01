@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Solution {
+public class Solution implements Comparable{
     private int capacity;
     private List<Integer> listItems;
     private int[] assignedBin;
@@ -98,5 +98,11 @@ public class Solution {
         return "Solution{" +
                 "assignedBin=" + getFitness() +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Solution s = (Solution) o;
+        return Integer.compare( this.getFitness(), s.getFitness());
     }
 }

@@ -8,6 +8,7 @@ import com.company.neighboor.MoveOneItemStrategy;
 import com.company.order.DecreasingOrderStrategy;
 import com.company.order.SimpleOrderStrategy;
 import com.company.solver.RecuitSimuleSolver;
+import com.company.solver.TabouSolver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +48,10 @@ public class BinPack {
         recuitSimuleSolver.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
         recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
 
+        TabouSolver tabouSolver = new TabouSolver(init);
+        tabouSolver.setListItemsOrderStrategy(simpleOrderStrategy);
+        tabouSolver.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
+        tabouSolver.setNeighbourStrategy(moveOneItemStrategy);
         System.out.println("Bins init: " + Arrays.toString(init.getAssignedBin()));
         System.out.println("Bins occupation init: " + init.getListBins());
         System.out.println("Fitness init: " + init.getFitness());
@@ -54,10 +59,13 @@ public class BinPack {
 
         // fixer t0 de manière à avoir 4 chances sur 5 d’accepter ces solutions : exp(-Df/t0) = 0.8 => t0 = -Df/ln(0.8)
         // fixer n1 de manière à avoir 1 chance sur 100 (par exemple) d’accepter la même mauvaise solution que pour fixer t0 : n1 = ln(ln(0.8)/ln(0.01))/ln(μ)
-        Solution s = recuitSimuleSolver.solve(0.5, 5, 5, 500, 0.75);
-        System.out.println(s.getFitness());
-        System.out.println(s.getListBins());
-        System.out.println(Arrays.toString(s.getAssignedBin()));
+        //Solution s = recuitSimuleSolver.solve(0.5, 5, 5, 500, 0.75);
+        Solution s1 = tabouSolver.solve(init, 100000);
+
+        System.out.println(s1.getFitness());
+        //System.out.println(s.getFitness());
+        //System.out.println(s.getListBins());
+        //System.out.println(Arrays.toString(s.getAssignedBin()));
     }
 
 }
