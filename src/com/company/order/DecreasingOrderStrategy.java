@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class DecreasingOrderStrategy implements ListItemsOrderStrategy {
 
     @Override
-    public List<Item> orderList(List<Item> listItems) {
-        return listItems.stream().sorted((item, item2) -> Integer.compare(item2.getSize(), item.getSize())).collect(Collectors.toList());
+    public List<Integer> orderList(List<Integer> listItems) {
+        return listItems.stream().sorted((item, item2) -> Integer.compare(item2, item)).collect(Collectors.toList());
     }
 }

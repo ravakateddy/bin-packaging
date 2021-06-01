@@ -2,6 +2,7 @@ package com.company;
 
 
 import com.company.generator.GeneratorStrategy;
+import com.company.order.ListItemsOrderStrategy;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,10 +12,11 @@ import java.util.Scanner;
 
 public class Solution {
     private int capacity;
-    private ArrayList<Integer> listItems;
+    private List<Integer> listItems;
     private int[] assignedBin;
     private List<Integer> listBins;
     GeneratorStrategy generatorStrategy;
+    ListItemsOrderStrategy listItemsOrderStrategy;
     private int[] neighbour;
 
     public Solution(){
@@ -46,7 +48,7 @@ public class Solution {
         }
     }
 
-    public ArrayList<Integer> getListItems() {
+    public List<Integer> getListItems() {
         return listItems;
     }
 
@@ -70,6 +72,11 @@ public class Solution {
         this.generatorStrategy = generatorStrategy;
         setAssignedBin(this.generatorStrategy.generate(listItems, capacity, listBins));
 
+    }
+
+    public void setListItemsOrderStrategy(ListItemsOrderStrategy listItemsOrderStrategy) {
+        this.listItemsOrderStrategy = listItemsOrderStrategy;
+        this.listItems = listItemsOrderStrategy.orderList(listItems);
     }
 
     public List<Integer> getListBins(){

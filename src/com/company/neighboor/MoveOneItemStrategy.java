@@ -16,19 +16,11 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
         System.arraycopy(assignedBin, 0, voisin, 0, assignedBin.length);
         System.out.println("After: " + Arrays.toString(assignedBin));
 
-//        System.out.println(sizes.toString());
-//        System.out.println("List bins: " + bins.toString());
-//        System.out.println(Arrays.toString(solInit));
-//        System.out.println(Arrays.toString(assignedBin));
-
         int itemSelect = (int)(Math.random() * voisin.length-1);
-//        System.out.println(itemSelect);
 
         int binOfItemSelect = voisin[itemSelect];
-//        System.out.println(binOfItemSelect);
 
         int sizeOfItemSelect = items.get(itemSelect);
-//        System.out.println("Taille de l'item: " + sizeOfItemSelect);
 
         int capacityOfBinSelect = bins.get(binOfItemSelect);
 //        System.out.println(capacityOfBinSelect);

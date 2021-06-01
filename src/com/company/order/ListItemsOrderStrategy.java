@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface ListItemsOrderStrategy {
 
-    List<Item> orderList(List<Item> listItems);
+    List<Integer> orderList(List<Integer> listItems);
 }
