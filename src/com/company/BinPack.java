@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class BinPack {
 
         //Récupération information fichier
 //        String file = "src/com/company/test2.txt";
-        String file = "src/com/company/data/binpack1d_00.txt";
+        String file = "src/com/company/data/binpack1d_31.txt";
 
         try {
             File myObj = new File(file);
@@ -65,14 +66,11 @@ public class BinPack {
 
         List<int[]> listOfNeighboor = new ArrayList<>();
 
-        for(int i = 0; i<10; i++) {
-            echangeItem(sizes, bins);
-        }
-
-
         //génération de 10 voisins
-        /*for(int i = 0; i < 10; i++) {
-            if(moveOneItem(sizes, bins)) {
+        for(int i = 0; i < 10; i++) {
+//            boolean neighboorNew = moveOneItem(sizes, bins);
+            boolean neighboorNew = echangeItem(sizes, bins);
+            if(neighboorNew) {
                 int[] neighboor = new int[numItems];
                 System.arraycopy(assignedBin, 0, neighboor, 0, neighboor.length);
                 listOfNeighboor.add(neighboor);
@@ -84,7 +82,7 @@ public class BinPack {
         System.out.println(listOfNeighboor.size());
         for(int i = 0; i< listOfNeighboor.size(); i++) {
             System.out.println(Arrays.toString(listOfNeighboor.get(i)));
-        }*/
+        }
 
     }
 
@@ -170,7 +168,7 @@ public class BinPack {
 
         //Déplacement d'un item vers un autre bin
         boolean moveOK = false;
-        System.out.println(binOfItemSelect + "/" + (bins.size()-1));
+
         int random;
         if(binOfItemSelect == 0){
             random = 1;
@@ -180,54 +178,73 @@ public class BinPack {
             random = (Math.random() > 0.5) ? 1 : 0;
         }
 
-        System.out.println(bins);
         int i = 1;
         int neighboorBin;
         if(random == 1) {
-            System.out.println(bins.get(binOfItemSelect+i) == 9 && binOfItemSelect+i <= bins.size());
             while(bins.get(binOfItemSelect+i) == 9 && binOfItemSelect+i <= bins.size()){
                 i++;
             }
 
-//            System.out.println("Voisin potentiel en "+ i + " cap dispo " + bins.get(binOfItemSelect+i));
             neighboorBin = binOfItemSelect+i;
         }else {
-            System.out.println(bins.get(binOfItemSelect-i) == 9 && binOfItemSelect-i > 0);
             while(bins.get(binOfItemSelect-i) == 9 && binOfItemSelect-i > 0){
                 i++;
             }
 
-//            System.out.println("Voisin potentiel en - "+ i + " cap dispo " + bins.get(binOfItemSelect-i));
             neighboorBin = binOfItemSelect-i;
         }
 
-        System.out.println(neighboorBin);
-        System.out.println(Arrays.toString(assignedBin));
-//        List<Integer> indexOfItemsOfNeighboorBin = new ArrayList<>();
-        HashMap<Integer,Integer> indexOfItemsOfNeighboorBin = new HashMap<>();
+        List<Integer> indexOfItemsOfNeighboorBin = new ArrayList<>();
+        List<Integer> valueItemsOfNeighboorBin = new ArrayList<>();
+
+        //récupération des items qui sont dans le bin voisin
         for(int j = 0; j < assignedBin.length; j++){
             if(assignedBin[j] == neighboorBin){
-                indexOfItemsOfNeighboorBin.put(j, sizes.get(j));
+
+                //on vérifie si l'item est supérieur à la taille de l'item que l'on cherche à déplacer
+                //et si la taille de l'item du voisin peut rentrer dans le bin initial
+                if(bins.get(neighboorBin)+sizes.get(j) >= sizeOfItemSelect){
+                    //L'espace dispo dans le bin voisin en retirant l'item présent permet d'accueillir l'item selectionné
+                    if(sizes.get(j) != sizeOfItemSelect) {
+                        //L'item j est différent de l'item sélectionné");
+                        if(bins.get(binOfItemSelect)+sizeOfItemSelect >= sizes.get(j)){
+                            //L'item select rentre dans le bin init
+                            //récupération de l'index de l'item
+                            indexOfItemsOfNeighboorBin.add(j);
+                            //récupération valeur de l'index
+                            valueItemsOfNeighboorBin.add(sizes.get(j));
+                        }
+                    }
+                }
             }
         }
 
-        System.out.println(indexOfItemsOfNeighboorBin);
-        System.out.println(indexOfItemsOfNeighboorBin);
+        if(indexOfItemsOfNeighboorBin.size() != 0){
+            moveOK = true;
+            if(indexOfItemsOfNeighboorBin.size() == 1){
+                //retrait des items des bins respectifs
+                bins.set(binOfItemSelect,bins.get(binOfItemSelect)+sizeOfItemSelect);
+                bins.set(neighboorBin, bins.get(neighboorBin)+valueItemsOfNeighboorBin.get(0));
+                //ajout des items dans leurs nouveaux bins
+                bins.set(binOfItemSelect, bins.get(binOfItemSelect)-valueItemsOfNeighboorBin.get(0));
+                bins.set(neighboorBin, bins.get(neighboorBin)-sizeOfItemSelect);
+                //enregistrement des nouveaux emplacements
+                assignedBin[itemSelect] = neighboorBin;
+                assignedBin[indexOfItemsOfNeighboorBin.get(0)] = binOfItemSelect;
+            }else {
+                int randomItem = (int)(Math.random() * (indexOfItemsOfNeighboorBin.size()-1));
 
-//        for(int i = 0; i < bins.size(); i++) {
-//            if(!moveOK) {
-//                //vérification si un bin à la capacité d'accueillir l'item sélectionné
-//                if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < capacity) {
-//
-//                    //Mise à jour des capacités restantes des bins
-//                    bins.set(i, bins.get(i)-sizeOfItemSelect);
-//                    bins.set(binOfItemSelect, bins.get(binOfItemSelect)+sizeOfItemSelect);
-//                    //enregistrement nouvel emplacement
-//                    assignedBin[itemSelect] = i;
-//                    moveOK = true;
-//                }
-//            }
-//        }
+                //retrait des items des bins respectifs
+                bins.set(binOfItemSelect,bins.get(binOfItemSelect)+sizeOfItemSelect);
+                bins.set(neighboorBin, bins.get(neighboorBin)+valueItemsOfNeighboorBin.get(randomItem));
+                //ajout des items dans leurs nouveaux bins
+                bins.set(binOfItemSelect, bins.get(binOfItemSelect)-valueItemsOfNeighboorBin.get(randomItem));
+                bins.set(neighboorBin, bins.get(neighboorBin)-sizeOfItemSelect);
+                //enregistrement des nouveaux emplacements
+                assignedBin[itemSelect] = neighboorBin;
+                assignedBin[indexOfItemsOfNeighboorBin.get(randomItem)] = binOfItemSelect;
+            }
+        }
 
         return moveOK;
     }
