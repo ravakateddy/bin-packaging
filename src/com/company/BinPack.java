@@ -18,8 +18,6 @@ import java.util.Scanner;
 
 public class BinPack {
 
-    static int capacity, binUsed = 0;
-    static int[] assignedBin, solInit;
 
     public static void main(String[] args) {
 
@@ -30,7 +28,7 @@ public class BinPack {
         //Récupération information fichier
 //        String file = "src/com/company/test2.txt";
         Solution init = new Solution();
-        init.getSolutionFromFile("src/com/company/test2.txt");
+        init.getSolutionFromFile("src/com/company/data/binpack1d_00.txt");
 
         // Order
         DecreasingOrderStrategy decreasingOrderStrategy = new DecreasingOrderStrategy();
@@ -46,7 +44,7 @@ public class BinPack {
 
         RecuitSimuleSolver recuitSimuleSolver = new RecuitSimuleSolver(init);
         recuitSimuleSolver.setListItemsOrderStrategy(simpleOrderStrategy);
-        recuitSimuleSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
+        recuitSimuleSolver.setGeneratorStrategy(oneItemOneBinGeneratorStrategy);
         recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
         recuitSimuleSolver.solve(0.5);
         System.exit(0);

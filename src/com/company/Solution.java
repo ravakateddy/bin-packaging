@@ -24,6 +24,12 @@ public class Solution {
         listBins = new ArrayList<>();
     }
 
+    public Solution(int capacity){
+        this.listItems = new ArrayList<>();
+        listBins = new ArrayList<>();
+        this.capacity = capacity;
+    }
+
     public void getSolutionFromFile(String file){
 
         try {
@@ -76,10 +82,21 @@ public class Solution {
         return listBins;
     }
 
+    public int getFitness(){
+        int sum = 0;
+        for(int i=0; i<listBins.size(); i++){
+            if(listBins.get(i)!=capacity){
+                sum+=listBins.get(i);
+            }
+
+        }
+        return sum;
+    }
+
     @Override
     public String toString() {
         return "Solution{" +
-                "assignedBin=" + Arrays.toString(assignedBin) +
+                "assignedBin=" + getFitness() +
                 '}';
     }
 }
