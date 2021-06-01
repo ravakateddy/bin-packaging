@@ -5,5 +5,5 @@ import com.company.Bin;
 import java.util.List;
 
 public interface NeighbourStrategy {
-    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins);
+    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins, int sizeOfBin);
 }

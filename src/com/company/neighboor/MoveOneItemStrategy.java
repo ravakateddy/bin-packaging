@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MoveOneItemStrategy implements NeighbourStrategy {
     @Override
-    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins) {
+    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins ,int sizeOfBin) {
 
         int[] voisin = new int[assignedBin.length];
         System.arraycopy(assignedBin, 0, voisin, 0, assignedBin.length);
@@ -27,7 +27,7 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
         boolean moveOK = false;
         for(int i = 0; i < bins.size(); i++) {
             if(!moveOK) {
-                if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < 9) {
+                if(bins.get(i) >= sizeOfItemSelect && bins.get(i) < sizeOfBin) {
 //                    System.out.println("On peut déplacer ici: " + i + " capacité dispo de ce bin: " + bins.get(i));
 
                     //Mise à jour des capacités restantes des bins

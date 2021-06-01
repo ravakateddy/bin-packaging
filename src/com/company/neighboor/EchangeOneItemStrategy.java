@@ -12,7 +12,7 @@ import java.util.List;
 public class EchangeOneItemStrategy implements NeighbourStrategy {
 
     @Override
-    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins) {
+    public int[] move(int[] assignedBin, List<Integer> items, List<Integer> bins, int sizeOfBin) {
 
         //reinitialisation de assignedBin avec la solution initiale
         int voisin[] = new int[assignedBin.length];
@@ -42,13 +42,13 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
         int i = 1;
         int neighboorBin;
         if(random == 1) {
-            while(bins.get(binOfItemSelect+i) == 9 && binOfItemSelect+i <= bins.size()){
+            while(bins.get(binOfItemSelect+i) == sizeOfBin && binOfItemSelect+i <= bins.size()){
                 i++;
             }
 
             neighboorBin = binOfItemSelect+i;
         }else {
-            while(bins.get(binOfItemSelect-i) == 9 && binOfItemSelect-i > 0){
+            while(bins.get(binOfItemSelect-i) == sizeOfBin && binOfItemSelect-i > 0){
                 i++;
             }
 

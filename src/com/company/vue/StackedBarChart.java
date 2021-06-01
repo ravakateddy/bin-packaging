@@ -37,6 +37,18 @@ import org.jfree.ui.RefineryUtilities;
             }
             return DatasetUtilities.createCategoryDataset("Item ", "Bin", data);
         }
+        private CategoryDataset getDatasetFromListItem(List<Bin> listBin) {
+            double[][] data = new double[10][10];
+            for(int i=0; i<10; i++){
+                for(int j=0; j<listBin.size(); j++){
+                    if(i<listBin.get(j).getListItems().size()){
+                        data[i][j] = listBin.get(j).getListItems().get(i).getSize();
+                    }
+
+                }
+            }
+            return DatasetUtilities.createCategoryDataset("Item ", "Bin", data);
+        }
         private JFreeChart createChart(CategoryDataset dataset) {
             final JFreeChart chart = ChartFactory.createStackedBarChart("Stacked Bar Chart ", "",
                     "Score", dataset, PlotOrientation.VERTICAL, true, true, false);
