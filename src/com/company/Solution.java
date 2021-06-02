@@ -93,6 +93,17 @@ public class Solution implements Comparable{
         return sum;
     }
 
+    public int getNumberOfBinUsed(){
+        int binUsed = 0;
+        for(int i = 0; i < listBins.size(); i++){
+            if(listBins.get(i) != this.getCapacity()){
+                binUsed++;
+            }
+        }
+
+        return binUsed;
+    }
+
     @Override
     public String toString() {
         return "Solution{" +
