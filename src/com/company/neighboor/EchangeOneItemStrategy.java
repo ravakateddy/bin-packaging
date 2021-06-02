@@ -1,12 +1,6 @@
 package com.company.neighboor;
 
-import com.company.Bin;
-import com.company.Item;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class EchangeOneItemStrategy implements NeighbourStrategy {

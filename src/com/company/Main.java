@@ -1,17 +1,5 @@
 package com.company;
 
-import com.company.generator.FirstFitGeneratorStrategy;
-import com.company.generator.OneItemOneBinGeneratorStrategy;
-import com.company.neighboor.EchangeOneItemStrategy;
-import com.company.neighboor.MoveOneItemStrategy;
-import com.company.order.DecreasingOrderStrategy;
-import com.company.order.SimpleOrderStrategy;
-import com.company.vue.StackedBarChart;
-import org.jfree.ui.RefineryUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
 
     static class DataModel {

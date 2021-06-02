@@ -1,12 +1,7 @@
 package com.company.solver;
 
-import com.company.Bin;
 import com.company.Solution;
-import com.company.neighboor.EchangeOneItemStrategy;
-import com.company.neighboor.MoveOneItemStrategy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RecuitSimuleSolver extends Solver {
@@ -35,6 +30,7 @@ public class RecuitSimuleSolver extends Solver {
                 int yi = (int)(Math.random() * voisins.size()-1);
                 Solution y = voisins.get(yi);
                 int deltaF = y.getFitness() - init.getFitness();
+
                 if(deltaF <= 0){
                     xi = y;
                     if(xi.getFitness()<xmin.getFitness()){
@@ -50,7 +46,6 @@ public class RecuitSimuleSolver extends Solver {
                         xi = y;
                     }
                 }
-
             }
             // System.out.println(Arrays.toString(xi.getAssignedBin()) + " " + xi);
             t0 = mu*t0;

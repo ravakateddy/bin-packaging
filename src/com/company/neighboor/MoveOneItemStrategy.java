@@ -1,9 +1,5 @@
 package com.company.neighboor;
 
-import com.company.Bin;
-import com.company.Item;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class MoveOneItemStrategy implements NeighbourStrategy {
