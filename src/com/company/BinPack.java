@@ -91,7 +91,7 @@ public class BinPack {
 
             Long startExecutionTime = System.nanoTime();
 
-            Solution s1 = new Solution();
+            Solution s1;
             //Définiton du solveur
             if (solver.equals("0")) {
                 System.out.println("Paramètres recuit simulé: t0=" + 0.5 + ", n1=" + 5 + ", n2=" + 5 + ", nbVoisins=" + 500 + ", mu=" + 0.75);
