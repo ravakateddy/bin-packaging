@@ -96,11 +96,18 @@ public class BinPack {
             Solution s1;
             //Définiton du solveur
             if (solver.equals("0")) {
-                System.out.println("Paramètres recuit simulé: t0=" + 0.5 + ", n1=" + 5 + ", n2=" + 5 + ", nbVoisins=" + 500 + ", mu=" + 0.75);
-                s1 = ((RecuitSimuleSolver) solverFinal).solve(1000, 100, 50, 1000, 0.9);
+                int t0 = 1000;
+                int n1 = 100;
+                int n2 = 5;
+                int nbVoisins = 500;
+                double mu = 0.75;
+                System.out.println("Paramètres recuit simulé: t0=" + t0 + ", n1=" + n1 + ", n2=" + n2 + ", nbVoisins=" + nbVoisins + ", mu=" + mu);
+                s1 = ((RecuitSimuleSolver) solverFinal).solve(t0, n1, n2, nbVoisins, mu);
             } else {
-                System.out.println("Paramètre tabou: maxIter=" + 100000);
-                s1 = ((TabouSolver) solverFinal).solve(init, 100000, 5);
+                int maxIter = 100000;
+                int maxT = 5;
+                System.out.println("Paramètre tabou: maxIter=" + maxIter + " max= " + maxT);
+                s1 = ((TabouSolver) solverFinal).solve(init, maxIter, maxT);
             }
 
             Long endExecutionTime = System.nanoTime();
