@@ -7,19 +7,17 @@ import com.google.ortools.linearsolver.MPSolver;
 import com.google.ortools.linearsolver.MPVariable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LinearProgram {
 
-    public void solve(List<Integer> listItems, int capacity){
+    public double solve(List<Integer> listItems, int capacity){
 
         //Transformation de nos données en dataModel
         ArrayList<Double> weights = new ArrayList<>();
         listItems.stream().mapToDouble(Integer::intValue).forEach(weights::add);
         System.out.println("weights" + weights);
         Object[] obj = weights.toArray();
-        System.out.println(Arrays.toString(obj));
 
         double[] weight = new double[obj.length];
         for(int i=0; i < weight.length; i++) {
@@ -39,7 +37,7 @@ public class LinearProgram {
         MPSolver solver = MPSolver.createSolver("SCIP");
         if (solver == null) {
             System.out.println("Could not create solver SCIP");
-            return;
+            return 0;
         }
 
         //Create the variables
@@ -117,7 +115,10 @@ public class LinearProgram {
             System.out.println("\nTotal packed weight: " + totalWeight);
         } else {
             System.err.println("The problem does not have an optimal solution.");
+            return -1;
         }
+
+        return objective.value();
 
     }
 }

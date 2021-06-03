@@ -31,7 +31,12 @@ public class BinPack {
         if (args[1].equals("2")) {
 
             LinearProgram linearProgram = new LinearProgram();
+
+            Long startExecutionTime = System.nanoTime();
             linearProgram.solve(init.getListItems(), init.getCapacity());
+            Long endExecutionTime = System.nanoTime();
+
+            System.out.println("Temps d'exécution (ms): " + ((endExecutionTime - startExecutionTime) / 1000000));
 
         } else {
 
