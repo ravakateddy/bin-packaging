@@ -5,82 +5,111 @@ import com.company.generator.GeneratorStrategy;
 import com.company.generator.OneItemOneBinGeneratorStrategy;
 import com.company.neighboor.EchangeOneItemStrategy;
 import com.company.neighboor.MoveOneItemStrategy;
+import com.company.neighboor.NeighbourStrategy;
 import com.company.order.DecreasingOrderStrategy;
+import com.company.order.ListItemsOrderStrategy;
 import com.company.order.SimpleOrderStrategy;
 import com.company.solver.RecuitSimuleSolver;
+import com.company.solver.Solver;
 import com.company.solver.TabouSolver;
 import com.company.vue.StackedBarChart;
 import org.jfree.ui.RefineryUtilities;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 public class BinPack {
 
-
     public static void main(String[] args) {
 
-        int numItems;
-        List<Integer> sizes = new ArrayList<>(); //list d'item
-        List<Integer> bins = new ArrayList<>();
+        //Récupération des arguments
+        String file = args[0];
+
+        System.out.println("file: " + file);
 
         //Récupération information fichier
-//        String file = "src/com/company/test2.txt";
         Solution init = new Solution();
-        init.getSolutionFromFile("src/com/company/data/binpack1d_31.txt");
+        init.getSolutionFromFile("src/com/company/data/" + file);
 
-        // Order
-        DecreasingOrderStrategy decreasingOrderStrategy = new DecreasingOrderStrategy();
-        SimpleOrderStrategy simpleOrderStrategy = new SimpleOrderStrategy();
+        if (args[1].equals("2")) {
 
-        // Generator
-        OneItemOneBinGeneratorStrategy oneItemOneBinGeneratorStrategy = new OneItemOneBinGeneratorStrategy();
-        FirstFitGeneratorStrategy firstFitGeneratorStrategy = new FirstFitGeneratorStrategy();
+            LinearProgram linearProgram = new LinearProgram();
 
-        // Neighbour
-        MoveOneItemStrategy moveOneItemStrategy = new MoveOneItemStrategy();
-        EchangeOneItemStrategy echangeOneItemStrategy = new EchangeOneItemStrategy();
+            Long startExecutionTime = System.nanoTime();
+            linearProgram.solve(init.getListItems(), init.getCapacity());
+            Long endExecutionTime = System.nanoTime();
 
-        RecuitSimuleSolver recuitSimuleSolver = new RecuitSimuleSolver(init);
-        recuitSimuleSolver.setListItemsOrderStrategy(decreasingOrderStrategy);
-        recuitSimuleSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
-        recuitSimuleSolver.setNeighbourStrategy(moveOneItemStrategy);
+            System.out.println("Temps d'exécution (ms): " + ((endExecutionTime - startExecutionTime) / 1000000));
 
-        TabouSolver tabouSolver = new TabouSolver(init);
-        //tabouSolver.setListItemsOrderStrategy(decreasingOrderStrategy);
-        //tabouSolver.setGeneratorStrategy(firstFitGeneratorStrategy);
-        //tabouSolver.setNeighbourStrategy(moveOneItemStrategy);
-        System.out.println("Bins init: " + Arrays.toString(init.getAssignedBin()));
-        System.out.println("Bins occupation init: " + init.getListBins());
-        System.out.println("Fitness init: " + init.getFitness());
+        } else {
 
+            String order = args[1];
+            String generator = args[2];
+            String neighboor = args[3];
+            String solver = args[4];
 
-        // fixer t0 de manière à avoir 4 chances sur 5 d’accepter ces solutions : exp(-Df/t0) = 0.8 => t0 = -Df/ln(0.8)
-        // fixer n1 de manière à avoir 1 chance sur 100 (par exemple) d’accepter la même mauvaise solution que pour fixer t0 : n1 = ln(ln(0.8)/ln(0.01))/ln(μ)
-        List<Double> x = new ArrayList<>();
-        List<Double> y = new ArrayList<>();
-            //Solution s = tabouSolver.solve(init, 10000, 2);
-            Solution s = recuitSimuleSolver.solve(1000000, 1000, 50, 50, 0.99998);
-        System.out.println(s.getListBins());
-        System.out.println(s.getFitness());
+            ListItemsOrderStrategy orderStrategy;
+            GeneratorStrategy generatorStrategy;
+            NeighbourStrategy neighbourStrategy;
+            Solver solverFinal;
 
-        //Solution s1 = tabouSolver.solve(init, 100000);
+            //Définition de l'ordre
+            if (order.equals("0")) {
+                orderStrategy = new SimpleOrderStrategy();
+            } else {
+                orderStrategy = new DecreasingOrderStrategy();
+            }
 
-        //System.out.println(s1.getFitness());
-        //System.out.println(s.getFitness());
-        //System.out.println(s.getListBins());
-        //System.out.println(Arrays.toString(s.getAssignedBin()));
-        StackedBarChart chart = new StackedBarChart(
-                "School Vs Years" ,
-                "Numer of Schools vs years", recuitSimuleSolver.getX(), recuitSimuleSolver.getY(), recuitSimuleSolver.getYExplore());
+            //Définition du générateur
+            if (generator.equals("0")) {
+                generatorStrategy = new OneItemOneBinGeneratorStrategy();
+            } else {
+                generatorStrategy = new FirstFitGeneratorStrategy();
+            }
 
-        chart.pack( );
-        RefineryUtilities.centerFrameOnScreen( chart );
-        chart.setVisible( true );
+            //Définition du voisin
+            if (neighboor.equals("0")) {
+                neighbourStrategy = new MoveOneItemStrategy();
+            } else {
+                neighbourStrategy = new EchangeOneItemStrategy();
+            }
+
+            //Définiton du solveur
+            if (solver.equals("0")) {
+                solverFinal = new RecuitSimuleSolver(init);
+            } else {
+                solverFinal = new TabouSolver(init);
+            }
+
+            //Assemblage
+            solverFinal.setListItemsOrderStrategy(orderStrategy);
+            solverFinal.setGeneratorStrategy(generatorStrategy);
+            solverFinal.setNeighbourStrategy(neighbourStrategy);
+
+            System.out.println("Bins init: " + Arrays.toString(init.getAssignedBin()));
+            System.out.println("Taille list item: " + init.getListItems().size());
+            System.out.println("Bins occupation init: " + init.getListBins());
+            System.out.println("Nombre bin init: " + init.getNumberOfBinUsed());
+            System.out.println("Fitness init: " + init.getFitness());
+
+            Long startExecutionTime = System.nanoTime();
+
+            Solution s1;
+            //Définiton du solveur
+            if (solver.equals("0")) {
+                System.out.println("Paramètres recuit simulé: t0=" + 0.5 + ", n1=" + 5 + ", n2=" + 5 + ", nbVoisins=" + 500 + ", mu=" + 0.75);
+                s1 = ((RecuitSimuleSolver) solverFinal).solve(1000, 100, 50, 1000, 0.9);
+            } else {
+                System.out.println("Paramètre tabou: maxIter=" + 100000);
+                s1 = ((TabouSolver) solverFinal).solve(init, 100000);
+            }
+
+            Long endExecutionTime = System.nanoTime();
+
+            System.out.println("Temps d'exécution (ms): " + ((endExecutionTime - startExecutionTime) / 1000000));
+            System.out.println(s1.getListBins());
+            System.out.println("Bin utilisé: " + s1.getNumberOfBinUsed());
+            System.out.println("Fitness Final: " + s1.getFitness());
+        }
     }
 
 }

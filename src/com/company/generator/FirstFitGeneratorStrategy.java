@@ -1,9 +1,5 @@
 package com.company.generator;
 
-import com.company.Bin;
-import com.company.Item;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class FirstFitGeneratorStrategy implements GeneratorStrategy{

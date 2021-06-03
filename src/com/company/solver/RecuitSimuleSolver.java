@@ -1,12 +1,7 @@
 package com.company.solver;
 
-import com.company.Bin;
 import com.company.Solution;
-import com.company.neighboor.EchangeOneItemStrategy;
-import com.company.neighboor.MoveOneItemStrategy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RecuitSimuleSolver extends Solver {
