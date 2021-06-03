@@ -100,7 +100,7 @@ public class BinPack {
                 s1 = ((RecuitSimuleSolver) solverFinal).solve(1000, 100, 50, 1000, 0.9);
             } else {
                 System.out.println("Paramètre tabou: maxIter=" + 100000);
-                s1 = ((TabouSolver) solverFinal).solve(init, 100000);
+                s1 = ((TabouSolver) solverFinal).solve(init, 100000, 5);
             }
 
             Long endExecutionTime = System.nanoTime();
