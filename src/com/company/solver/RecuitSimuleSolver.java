@@ -24,6 +24,7 @@ public class RecuitSimuleSolver extends Solver {
 //        System.out.println("Xi debut: " + Arrays.toString(xi.getAssignedBin()));
 //        System.out.println("Bins debut: " + xi.getListBins());
         //int fmin = xmin.fitness();
+        int i=0;
         for(int k=0; k<n1; k++){
 //            System.out.println("---------------------------------------- Tour N1 ------------------------------------");
             for(int l=1; l<n2; l++){
@@ -33,27 +34,33 @@ public class RecuitSimuleSolver extends Solver {
 //                System.out.println("Fitness voisin 0: " + voisins.get(0).getFitness());
 //                System.out.println("Bins voisin 0: " + voisins.get(0).getListBins());
                 int yi = (int)(Math.random() * voisins.size()-1);
+
                 Solution y = voisins.get(yi);
-                int deltaF = y.getFitness() - init.getFitness();
+                yExplore.add(y.getFitness()+0.0);
+                int deltaF = y.getFitness() - xi.getFitness();
                 if(deltaF <= 0){
                     xi = y;
                     if(xi.getFitness()<xmin.getFitness()){
                         xmin = xi;
-                        System.out.println("change xi bas" + xi);
+
                     }
+
                 }else{
                     double p = Math.random();
 
-                    if(p<Math.exp(-(deltaF/t0))){
-                        System.out.println(p);
-                        System.out.println("change xi haut" + xi);
+                    if(p<=Math.exp(-(deltaF/t0))){
                         xi = y;
+
                     }
                 }
+                i++;
+                this.x.add(i + 0.0);
+                this.y.add(xi.getFitness()+0.0);
+                t0 = mu*t0;
 
             }
             // System.out.println(Arrays.toString(xi.getAssignedBin()) + " " + xi);
-            t0 = mu*t0;
+
         }
         return xmin;
     }

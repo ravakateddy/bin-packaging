@@ -85,7 +85,7 @@ public class Solution implements Comparable{
     public int getFitness(){
         int sum = 0;
         for(int i=0; i<listBins.size(); i++){
-            if(listBins.get(i)!=capacity){
+            if(listBins.get(i)!=1000){
                 sum+=Math.pow(listBins.get(i),2);
             }
 
@@ -98,6 +98,10 @@ public class Solution implements Comparable{
         return "Solution{" +
                 "assignedBin=" + getFitness() +
                 '}';
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     @Override

@@ -13,8 +13,15 @@ public abstract class Solver {
     protected ListItemsOrderStrategy listItemsOrderStrategy;
     protected GeneratorStrategy generatorStrategy;
     protected NeighbourStrategy neighbourStrategy;
+    protected ArrayList<Double> x;
+    protected ArrayList<Double> y;
+    protected ArrayList<Double> yExplore;
     public Solver(Solution init){
         this.init = init;
+        x = new ArrayList<>();
+        x.add(0.0);
+        y = new ArrayList<>();
+        yExplore = new ArrayList<>();
     }
 
     public void setInit(Solution init) {
@@ -46,11 +53,24 @@ public abstract class Solver {
             int[] voisin = new int[s.getAssignedBin().length];
             System.arraycopy(s.getAssignedBin(), 0, voisin, 0, s.getAssignedBin().length);
             solution.setAssignedBin(voisin);
-            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), init.getCapacity()));
+            solution.setCapacity(init.getCapacity());
+            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
 //            System.out.println("Solution obtenue: " + Arrays.toString(solution.getAssignedBin()));
 //            System.out.println("Etat s (xi): " + Arrays.toString(s.getAssignedBin()));
             solutions.add(solution);
         }
         return solutions;
+    }
+
+    public ArrayList<Double> getX() {
+        return x;
+    }
+
+    public ArrayList<Double> getY() {
+        return y;
+    }
+
+    public List<Double> getYExplore() {
+        return yExplore;
     }
 }
