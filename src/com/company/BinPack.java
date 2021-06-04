@@ -104,8 +104,8 @@ public class BinPack {
                 System.out.println("Paramètres recuit simulé: t0=" + t0 + ", n1=" + n1 + ", n2=" + n2 + ", nbVoisins=" + nbVoisins + ", mu=" + mu);
                 s1 = ((RecuitSimuleSolver) solverFinal).solve(t0, n1, n2, nbVoisins, mu);
             } else {
-                int maxIter = 100000;
-                int maxT = 5;
+                int maxIter = 1000;
+                int maxT = 10;
                 System.out.println("Paramètre tabou: maxIter=" + maxIter + " max= " + maxT);
                 s1 = ((TabouSolver) solverFinal).solve(init, maxIter, maxT);
             }

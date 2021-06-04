@@ -2,6 +2,8 @@ package com.company.solver;
 
 import com.company.Solution;
 import com.company.generator.GeneratorStrategy;
+import com.company.neighboor.EchangeOneItemStrategy;
+import com.company.neighboor.MoveOneItemStrategy;
 import com.company.neighboor.NeighbourStrategy;
 import com.company.order.ListItemsOrderStrategy;
 
@@ -54,11 +56,26 @@ public abstract class Solver {
             System.arraycopy(s.getAssignedBin(), 0, voisin, 0, s.getAssignedBin().length);
             solution.setAssignedBin(voisin);
             solution.setCapacity(init.getCapacity());
+
+//            NeighbourStrategy neighbourStrategy;
+//            if(Math.random() > 0.5) {
+//                neighbourStrategy = new EchangeOneItemStrategy();
+//                if(s.getListItems().size() == s.getListBins().size()){
+//                    System.out.println("Move au lieu d'échange");
+//                    neighbourStrategy = new MoveOneItemStrategy();
+//                }
+//            } else {
+//                neighbourStrategy = new MoveOneItemStrategy();
+//            }
+
             solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
 //            System.out.println("Solution obtenue: " + Arrays.toString(solution.getAssignedBin()));
 //            System.out.println("Etat s (xi): " + Arrays.toString(s.getAssignedBin()));
             solutions.add(solution);
         }
+
+//        solutions.forEach(solution -> System.out.println(solution.getListBins()));
+
         return solutions;
     }
 

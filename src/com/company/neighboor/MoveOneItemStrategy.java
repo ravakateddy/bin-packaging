@@ -31,6 +31,10 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
             }
         }
 
+        if(!moveOK){
+            return move(assignedBin,items,bins,sizeOfBin);
+        }
+
 
         return voisin;
     }
