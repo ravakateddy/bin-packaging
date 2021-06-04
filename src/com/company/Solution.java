@@ -85,7 +85,7 @@ public class Solution implements Comparable{
     public int getFitness(){
         int sum = 0;
         for(int i=0; i<listBins.size(); i++){
-            if(listBins.get(i)!=1000){
+            if(listBins.get(i)!=this.getCapacity()){
                 sum+=Math.pow(listBins.get(i),2);
             }
 
