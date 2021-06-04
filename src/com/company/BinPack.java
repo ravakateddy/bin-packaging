@@ -109,13 +109,22 @@ public class BinPack {
                 System.out.println("Paramètre tabou: maxIter=" + maxIter + " max= " + maxT);
                 s1 = ((TabouSolver) solverFinal).solve(init, maxIter, maxT);
             }
-
             Long endExecutionTime = System.nanoTime();
+
+
 
             System.out.println("Temps d'exécution (ms): " + ((endExecutionTime - startExecutionTime) / 1000000));
             System.out.println(s1.getListBins());
             System.out.println("Bin utilisé: " + s1.getNumberOfBinUsed());
             System.out.println("Fitness Final: " + s1.getFitness());
+
+            StackedBarChart chart = new StackedBarChart(
+                    "School Vs Years" ,
+                    "Numer of Schools vs years", solverFinal.getX(), solverFinal.getY(), solverFinal.getYExplore());
+
+            chart.pack( );
+            RefineryUtilities.centerFrameOnScreen( chart );
+            chart.setVisible( true );
         }
     }
 

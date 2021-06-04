@@ -68,6 +68,9 @@ public abstract class Solver {
 //                neighbourStrategy = new MoveOneItemStrategy();
 //            }
 
+            this.neighbourStrategy = new MoveOneItemStrategy();
+            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
+            this.neighbourStrategy = new EchangeOneItemStrategy();
             solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
 //            System.out.println("Solution obtenue: " + Arrays.toString(solution.getAssignedBin()));
 //            System.out.println("Etat s (xi): " + Arrays.toString(s.getAssignedBin()));

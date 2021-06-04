@@ -51,9 +51,8 @@ public class RecuitSimuleSolver extends Solver {
                 i++;
                 this.x.add(i + 0.0);
                 this.y.add(xi.getFitness()+0.0);
-                t0 = mu*t0;
-
             }
+            t0 = mu*t0;
             // System.out.println(Arrays.toString(xi.getAssignedBin()) + " " + xi);
 
         }
