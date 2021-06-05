@@ -108,7 +108,7 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
         }
 
         if(!moveOK){
-            return move(assignedBin,items,bins,sizeOfBin);
+            voisin = null;
         }
 
         return voisin;

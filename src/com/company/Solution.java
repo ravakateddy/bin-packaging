@@ -118,6 +118,6 @@ public class Solution implements Comparable{
     @Override
     public int compareTo(Object o) {
         Solution s = (Solution) o;
-        return Integer.compare( this.getFitness(), s.getFitness());
+        return Integer.compare( this.getNumberOfBinUsed(), s.getNumberOfBinUsed());
     }
 }

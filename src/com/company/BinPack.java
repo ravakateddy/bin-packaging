@@ -119,8 +119,8 @@ public class BinPack {
             System.out.println("Fitness Final: " + s1.getFitness());
 
             StackedBarChart chart = new StackedBarChart(
-                    "School Vs Years" ,
-                    "Numer of Schools vs years", solverFinal.getX(), solverFinal.getY(), solverFinal.getYExplore());
+                    "Résultat" ,
+                    "Nombre de bins en fonction des itérations", solverFinal.getX(), solverFinal.getY(), solverFinal.getYExplore());
 
             chart.pack( );
             RefineryUtilities.centerFrameOnScreen( chart );

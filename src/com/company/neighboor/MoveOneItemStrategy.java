@@ -1,5 +1,6 @@
 package com.company.neighboor;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MoveOneItemStrategy implements NeighbourStrategy {
@@ -32,7 +33,7 @@ public class MoveOneItemStrategy implements NeighbourStrategy {
         }
 
         if(!moveOK){
-            return move(assignedBin,items,bins,sizeOfBin);
+            voisin = null;
         }
 
 
