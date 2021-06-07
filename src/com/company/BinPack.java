@@ -98,6 +98,7 @@ public class BinPack {
 
 
             System.out.println("Temps d'exécution (ms): " + ((endExecutionTime - startExecutionTime) / 1000000));
+            System.out.println(s1.getListBins());
             System.out.println("Bin utilisé: " + s1.getNumberOfBinUsed());
             System.out.println("Fitness Final: " + s1.getFitness());
 

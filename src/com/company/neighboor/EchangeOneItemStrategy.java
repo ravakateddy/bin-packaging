@@ -36,7 +36,7 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
         int i = 1;
         int neighboorBin;
         if(random == 1) {
-            while(bins.get(binOfItemSelect+i) == sizeOfBin && binOfItemSelect+i <= bins.size()){
+            while(bins.get(binOfItemSelect+i-1) == sizeOfBin && binOfItemSelect+i <= bins.size()){
                 i++;
             }
 
