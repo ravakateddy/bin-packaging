@@ -14,7 +14,6 @@ public abstract class Solver {
     protected Solution init;
     protected ListItemsOrderStrategy listItemsOrderStrategy;
     protected GeneratorStrategy generatorStrategy;
-    protected NeighbourStrategy neighbourStrategy;
     protected ArrayList<Double> x;
     protected ArrayList<Double> y;
     protected ArrayList<Double> yExplore;
@@ -40,13 +39,10 @@ public abstract class Solver {
         init.setAssignedBin(generatorStrategy.generate(init.getListItems(), init.getCapacity(), init.getListBins()));
     }
 
-    public void setNeighbourStrategy(NeighbourStrategy neighbourStrategy) {
-        this.neighbourStrategy = neighbourStrategy;
-    }
-
     protected List<Solution> genererVoisins(Solution s, int nb){
         List<Solution> solutions = new ArrayList<>();
-//        System.out.println("Solution s (xi): " + Arrays.toString(s.getAssignedBin()));
+
+        int essai = 0;
         for(int i=0; i<nb; i++){
             Solution solution = new Solution(s.getCapacity());
             solution.setListBins(new ArrayList<>(s.getListBins()));
@@ -57,27 +53,43 @@ public abstract class Solver {
             solution.setAssignedBin(voisin);
             solution.setCapacity(init.getCapacity());
 
-//            NeighbourStrategy neighbourStrategy;
-//            if(Math.random() > 0.5) {
-//                neighbourStrategy = new EchangeOneItemStrategy();
-//                if(s.getListItems().size() == s.getListBins().size()){
-//                    System.out.println("Move au lieu d'échange");
-//                    neighbourStrategy = new MoveOneItemStrategy();
-//                }
-//            } else {
-//                neighbourStrategy = new MoveOneItemStrategy();
-//            }
+            NeighbourStrategy neighbourStrategy;
+            if(Math.random() > 0.5) {
+                neighbourStrategy = new EchangeOneItemStrategy();
+                if(s.getListItems().size() == s.getNumberOfBinUsed()){
+//                  Move au lieu d'échange car la liste de bins est égale au nombre d'items"
+                    neighbourStrategy = new MoveOneItemStrategy();
+                }
+            } else {
+                neighbourStrategy = new MoveOneItemStrategy();
+            }
 
-            this.neighbourStrategy = new MoveOneItemStrategy();
-            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
-            this.neighbourStrategy = new EchangeOneItemStrategy();
-            solution.setAssignedBin(this.neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity()));
-//            System.out.println("Solution obtenue: " + Arrays.toString(solution.getAssignedBin()));
-//            System.out.println("Etat s (xi): " + Arrays.toString(s.getAssignedBin()));
-            solutions.add(solution);
+            int[] action = neighbourStrategy.move(solution.getAssignedBin(), solution.getListItems(), solution.getListBins(), solution.getCapacity());
+
+            //si on a réussi à réaliser l'action, on ajoute le voisin à la liste
+            if(action != null) {
+                solution.setAssignedBin(action);
+                solutions.add(solution);
+                essai = 0;
+            } else {
+//                System.out.println("Aucun déplacement possible: " + essai);
+                i--;
+                //on incrémente le nombre d'essai
+                essai++;
+            }
+
+            if(essai == 5 || solutions.size() == nb){
+//                if(essai == 5)
+//                    System.out.println("Nombre d'essai atteint");
+//                else {
+//                    System.out.println("Nombre de voisins atteints: " + solutions.size());
+//                }
+                break;
+            }
         }
 
 //        solutions.forEach(solution -> System.out.println(solution.getListBins()));
+//        System.out.println("SOLVER Nombre de voisins trouvés: " + solutions.size());
 
         return solutions;
     }

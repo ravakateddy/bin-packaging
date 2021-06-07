@@ -1,14 +1,9 @@
 package com.company;
 
 
-import com.company.generator.GeneratorStrategy;
-import com.company.neighboor.NeighbourStrategy;
-import com.company.order.ListItemsOrderStrategy;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +12,6 @@ public class Solution implements Comparable{
     private List<Integer> listItems;
     private int[] assignedBin;
     private List<Integer> listBins;
-    private int[] neighbour;
 
     public Solution(){
         this.listItems = new ArrayList<>();
@@ -118,6 +112,6 @@ public class Solution implements Comparable{
     @Override
     public int compareTo(Object o) {
         Solution s = (Solution) o;
-        return Integer.compare( this.getFitness(), s.getFitness());
+        return Integer.compare( this.getNumberOfBinUsed(), s.getNumberOfBinUsed());
     }
 }
