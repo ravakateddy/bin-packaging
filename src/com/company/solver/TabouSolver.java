@@ -2,7 +2,6 @@ package com.company.solver;
 
 import com.company.Solution;
 
-import java.awt.desktop.SystemEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
