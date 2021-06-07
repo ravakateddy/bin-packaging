@@ -18,7 +18,7 @@ public class StackedBarChart extends ApplicationFrame {
         super(applicationTitle);
         JFreeChart lineChart = ChartFactory.createXYLineChart(
                 chartTitle,
-                "Years","Number of Schools",
+                "Itération","Nombre de bins",
                 createDataset(x, y, yExplore),
                 PlotOrientation.VERTICAL,
                 true,true,false);
@@ -31,7 +31,7 @@ public class StackedBarChart extends ApplicationFrame {
     private CategoryTableXYDataset createDataset(List<Double> x, List<Double> y, List<Double> yExplore) {
         CategoryTableXYDataset dataset = new CategoryTableXYDataset( );
         for(int i=0; i<x.size()-1; i++){
-            dataset.add(x.get(i), y.get(i), "Test");
+            dataset.add(x.get(i), y.get(i), "Solution");
             dataset.add(x.get(i), yExplore.get(i), "Explore");
         }
         return dataset;

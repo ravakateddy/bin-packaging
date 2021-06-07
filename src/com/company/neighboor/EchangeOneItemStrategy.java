@@ -32,8 +32,7 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
         } else {
             random = (Math.random() > 0.5) ? 1 : 0;
         }
-//        System.out.println("VOISIN assignedBin: " + Arrays.toString(assignedBin));
-//        System.out.println("VOISIN binOfitemSelect: " + binOfItemSelect);
+
         int i = 1;
         int neighboorBin;
         if(random == 1) {
@@ -50,7 +49,6 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
             neighboorBin = binOfItemSelect-i;
         }
 
-//        System.out.println("VOISIN neighboorBin: " + neighboorBin);
 
         List<Integer> indexOfItemsOfNeighboorBin = new ArrayList<>();
         List<Integer> valueItemsOfNeighboorBin = new ArrayList<>();
@@ -76,9 +74,6 @@ public class EchangeOneItemStrategy implements NeighbourStrategy {
                 }
             }
         }
-
-//        System.out.println("VOISIN itemPossible: " + indexOfItemsOfNeighboorBin.size());
-//        System.out.println("VOISIN valeurItemPossible: " + valueItemsOfNeighboorBin);
 
         if(indexOfItemsOfNeighboorBin.size() != 0){
             moveOK = true;

@@ -8,14 +8,12 @@ import com.company.neighboor.NeighbourStrategy;
 import com.company.order.ListItemsOrderStrategy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class Solver {
     protected Solution init;
     protected ListItemsOrderStrategy listItemsOrderStrategy;
     protected GeneratorStrategy generatorStrategy;
-    protected NeighbourStrategy neighbourStrategy;
     protected ArrayList<Double> x;
     protected ArrayList<Double> y;
     protected ArrayList<Double> yExplore;
@@ -41,13 +39,9 @@ public abstract class Solver {
         init.setAssignedBin(generatorStrategy.generate(init.getListItems(), init.getCapacity(), init.getListBins()));
     }
 
-    public void setNeighbourStrategy(NeighbourStrategy neighbourStrategy) {
-        this.neighbourStrategy = neighbourStrategy;
-    }
-
     protected List<Solution> genererVoisins(Solution s, int nb){
         List<Solution> solutions = new ArrayList<>();
-//        System.out.println("Solution s (xi): " + Arrays.toString(s.getAssignedBin()));
+
         int essai = 0;
         for(int i=0; i<nb; i++){
             Solution solution = new Solution(s.getCapacity());
@@ -63,7 +57,7 @@ public abstract class Solver {
             if(Math.random() > 0.5) {
                 neighbourStrategy = new EchangeOneItemStrategy();
                 if(s.getListItems().size() == s.getNumberOfBinUsed()){
-//                    System.out.println("Move au lieu d'échange car la liste de bins est égale au nombre d'items");
+//                  Move au lieu d'échange car la liste de bins est égale au nombre d'items"
                     neighbourStrategy = new MoveOneItemStrategy();
                 }
             } else {
