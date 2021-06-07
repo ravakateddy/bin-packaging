@@ -96,11 +96,11 @@ public class BinPack {
             Solution s1;
             //Définiton du solveur
             if (solver.equals("0")) {
-                int t0 = 1000;
-                int n1 = 100;
-                int n2 = 5;
-                int nbVoisins = 500;
-                double mu = 0.75;
+                double t0 = 200000;
+                int n1 = 1000;
+                int n2 = 100;
+                int nbVoisins = 100;
+                double mu = 0.98;
                 System.out.println("Paramètres recuit simulé: t0=" + t0 + ", n1=" + n1 + ", n2=" + n2 + ", nbVoisins=" + nbVoisins + ", mu=" + mu);
                 s1 = ((RecuitSimuleSolver) solverFinal).solve(t0, n1, n2, nbVoisins, mu);
             } else {

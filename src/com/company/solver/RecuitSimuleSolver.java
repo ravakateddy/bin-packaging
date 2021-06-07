@@ -30,7 +30,7 @@ public class RecuitSimuleSolver extends Solver {
 //                System.out.println("Bins voisin 0: " + voisins.get(0).getListBins());
                 int yi = (int)(Math.random() * voisins.size()-1);
 
-                Solution y = voisins.get(yi);
+                Solution y = voisins.size()>0?voisins.get(yi):xi;
                 yExplore.add(y.getFitness()+0.0);
                 int deltaF = y.getFitness() - xi.getFitness();
                 if(deltaF <= 0){
@@ -56,6 +56,7 @@ public class RecuitSimuleSolver extends Solver {
             // System.out.println(Arrays.toString(xi.getAssignedBin()) + " " + xi);
 
         }
+        System.out.println("Température finale : "  + t0);
         return xmin;
     }
 
